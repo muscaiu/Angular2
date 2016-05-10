@@ -1,0 +1,61 @@
+<form   #f="ngForm" (ngSubmit)="onSubmit(f.form)" 
+        class="container">
+    <!--<<<<<<<<< ZEN Coding >>>>>>>>>>
+    . to specify classes
+    > to specify imediate children 
+    + to specify siblings
+    [] to specify attributes
+    -->
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <!--ngControl is to give Angular the control!-->
+            <!--#firstName is a variable declared and must be ="ngForm" witch is same as ngControl-->
+            
+            <input  
+                ngControl="firstName" 
+                #firstName="ngForm" 
+                id="firstName" 
+                type="text" 
+                class="form-control"
+                required
+                minlength="3">                
+            <div *ngIf="firstName.touched && firstName.errors">
+                <!--testing to see the objects under the hood-->
+                {{firstName.errors | json}}
+                <div 
+                    *ngIf="firstName.errors.required" 
+                    class="alert alert-danger">                
+                    First name is required.
+                </div>
+                <div
+                    *ngIf="firstName.errors.minlength"
+                    class="alert alert-danger">
+                    First name sould be minimim 
+                    <!--To get the minlength value set above (minlegth="3")-->
+                    {{firstName.errors.minlength.requiredLength}}
+                    characters.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea 
+                #comment="ngForm" 
+                ngControl="comment" 
+                id="comment" 
+                cols="30" 
+                rows="10" 
+                class="form-control"
+                required>
+            </textarea>
+            <div *ngIf="comment.touched && !comment.valid"
+                 class="alert alert-danger">
+                Comment is required.
+            </div>
+        </div>
+        <button class="btn btn-primary"
+                type="submit"
+                [disabled]="!f.valid">
+            Submit
+        </button>
+</form>
