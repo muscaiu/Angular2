@@ -18,10 +18,13 @@ import {ObservablesComponent} from './Observables/observables.component'
 import {PostService} from './ServerConnect/post.service'
 import {HTTP_PROVIDERS} from 'angular2/http'
 import {OnInit} from 'angular2/core'
+import {GithubProfileComponent} from './ServerConnect/Solution/github-profile.component'
+
 @Component({
     selector: 'my-app',
-    template: `
-    
+    template: `    
+    <hr>
+    <github-profile> </github-profile>
     <hr>
     <observables></observables>
     <hr>
@@ -76,7 +79,8 @@ import {OnInit} from 'angular2/core'
         ContactFormComponent, 
         SubscriptionFormComponent,
         SignupFormComponent,
-        ObservablesComponent]
+        ObservablesComponent,
+        GithubProfileComponent]
     ,providers:[
         TweetService, 
         //(94.4)We have to impost PostService and all it's services like Http 
@@ -84,17 +88,22 @@ import {OnInit} from 'angular2/core'
 })
 export class AppComponent implements OnInit {     
     tweets;
+     //(97 Showing Loader Icon)
+    isLoading = true;
     //(94.3 inect the service into the constructor after importing it up)
     constructor(private _postService:PostService, tweetService: TweetService){
       //the data here need to be like the interface in Post.ts
       //this._postService.createPost({userId:1, title:"a", body:"b"});
-      this.tweets = tweetService.getTweets();
+      this.tweets = tweetService.getTweets();       
     }
     //(95.1) ngOnInit is used to call the server
     ngOnInit(){
         //(94.5)Using the Service
         this._postService.getPosts()
-            //(96)to get intellisense to 
-            .subscribe(posts => console.log(posts[1].title))  
+            //(96)to get intellisense for post.ts
+            .subscribe(posts =>{
+              this.isLoading = false;
+              console.log(posts[1].title)
+            });  
     }
 }
